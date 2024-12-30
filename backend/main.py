@@ -16,19 +16,28 @@ app.add_middleware(
 # Instance globale de notre population d'agents
 population = AgentPopulation(size=5)
 
+@app.get("/")
+async def root():
+    return {"message": "API is running"}
+
+@app.get("/test")
+async def test():
+    return {"agent_count": len(population.agents)}
+
 @app.get("/agents")
 async def get_agents():
-    return {
-        "agents": [
-            {
-                "name": agent.name,
-                "dna": agent.dna.__dict__,
-                "fitness": agent.fitness,
-                "actions_history": agent.actions_history
-            }
-            for agent in population.agents
-        ]
-    }
+    print("Getting agents...")  # Debug print
+    agents_data = [
+        {
+            "name": agent.name,
+            "dna": agent.dna.__dict__,
+            "fitness": agent.fitness,
+            "actions_history": agent.actions_history
+        }
+        for agent in population.agents
+    ]
+    print(f"Returning {len(agents_data)} agents")  # Debug print
+    return {"agents": agents_data}
 
 @app.post("/evolve")
 async def evolve_population():
