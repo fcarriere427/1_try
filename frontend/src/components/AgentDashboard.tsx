@@ -7,28 +7,18 @@ const AgentDashboard = () => {
   const [selectedAgent, setSelectedAgent] = useState(null);
   const [agents, setAgents] = useState([]);
 
-  // Simulation de données pour l'exemple
   useEffect(() => {
-    // Dans une vraie application, ces données viendraient de votre backend Python
-    const mockAgents = [
-      {
-        name: "Agent_1",
-        dna: {
-          web_search_ability: 0.8,
-          synthesis_ability: 0.6,
-          web_action_ability: 0.7,
-          creativity: 0.9,
-          focus: 0.75
-        },
-        fitness: 0.82,
-        actions_history: [
-          { timestamp: "2024-01-01", success: true, task: "web_search" },
-          { timestamp: "2024-01-02", success: false, task: "synthesis" }
-        ]
+    const fetchAgents = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/agents');
+        const data = await response.json();
+        setAgents(data.agents);
+      } catch (error) {
+        console.error('Error fetching agents:', error);
       }
-      // ... autres agents
-    ];
-    setAgents(mockAgents);
+    };
+  
+    fetchAgents();
   }, []);
 
   const DNAVisualization = ({ dna }) => {
