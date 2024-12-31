@@ -8,7 +8,7 @@ app_prefix = os.getenv('APP_PREFIX', '')  # '' est la valeur par défaut si la v
 
 
 class GeneticAlgorithm:
-    def __init__(self, population_size=100, target="bob morane", mutation_rate=0.05):
+    def __init__(self, population_size=100, target="target init", mutation_rate=0.05):
         self.population_size = population_size
         self.target = target
         self.genes_length = len(target)
@@ -136,7 +136,7 @@ def evolve():
 def reset():
     global ga
     population_size = int(request.json.get('population_size', 100))
-    target = str(request.json.get('target', "pas facile..."))
+    target = str(request.json.get('target', "target par defaut dans reset"))
     mutation_rate = float(request.json.get('mutation_rate', 0.05))
     ga = GeneticAlgorithm(population_size=population_size, target=target, mutation_rate=mutation_rate)
     return jsonify(ga.get_stats())
