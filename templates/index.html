@@ -61,12 +61,50 @@
         <p>Meilleur individu: <span id="bestIndividual">-</span></p>
     </div>
 
+    <div class="population-details">
+        <h3>Détails de la Population</h3>
+        <div style="max-height: 400px; overflow-y: auto;">
+            <table id="populationTable" style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr>
+                        <th style="padding: 8px; border: 1px solid #ddd; background-color: #f5f5f5;">Génération</th>
+                        <th style="padding: 8px; border: 1px solid #ddd; background-color: #f5f5f5;">Individu #</th>
+                        <th style="padding: 8px; border: 1px solid #ddd; background-color: #f5f5f5;">Gènes</th>
+                        <th style="padding: 8px; border: 1px solid #ddd; background-color: #f5f5f5;">Fitness</th>
+                    </tr>
+                </thead>
+                <tbody id="populationTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
     <script>
         function updateStats(data) {
             document.getElementById('generation').textContent = data.generation;
             document.getElementById('bestFitness').textContent = data.best_fitness;
             document.getElementById('avgFitness').textContent = data.avg_fitness.toFixed(2);
             document.getElementById('bestIndividual').textContent = data.best_individual || '-';
+            
+            // Mettre à jour le tableau des détails de la population
+            const tableBody = document.getElementById('populationTableBody');
+            
+            // Ajouter les nouvelles lignes pour la génération actuelle
+            data.population_details.forEach(individual => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td style="padding: 8px; border: 1px solid #ddd;">${data.generation}</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">${individual.id}</td>
+                    <td style="padding: 8px; border: 1px solid #ddd; font-family: monospace;">${individual.genes}</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">${individual.fitness}</td>
+                `;
+                tableBody.insertBefore(row, tableBody.firstChild);
+            });
+            
+            // Limiter le nombre de lignes affichées (optionnel)
+            const maxRows = 1000;  // Ajustez selon vos besoins
+            while (tableBody.children.length > maxRows) {
+                tableBody.removeChild(tableBody.lastChild);
+            }
         }
 
         async function resetGA() {
