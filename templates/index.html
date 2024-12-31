@@ -113,6 +113,9 @@
     </div>
 
     <script>
+
+        const APP_PREFIX = window.location.pathname.replace(/\/$/, ''); // Enlève le slash final s'il existe
+
         function updateStats(data) {
             document.getElementById('generation').textContent = data.generation;
             document.getElementById('bestFitness').textContent = data.best_fitness.toFixed(1) + '%';
@@ -146,7 +149,7 @@
             const tableBody = document.getElementById('generationTableBody');
             tableBody.innerHTML = '';
             
-            const response = await fetch('/reset', {
+            const response = await fetch(APP_PREFIX + '/reset', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -164,7 +167,7 @@
         async function evolveGA() {
             const generations = document.getElementById('generations').value;
             
-            const response = await fetch('/evolve', {
+            const response = await fetch(APP_PREFIX + '/evolve', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
