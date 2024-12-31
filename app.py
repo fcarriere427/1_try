@@ -41,8 +41,8 @@ class GeneticAlgorithm:
         # Nombre de caractères corrects à la bonne position
         decoded = self.decode_individual(individual)
         matches = sum(1 for a, b in zip(decoded, self.target) if a == b)
-        return matches
-
+        return (matches / len(self.target)) * 100  # Convertit en pourcentage
+        
     def select_parents(self):
         # Sélection par tournoi
         fitness_scores = [self.fitness(ind) for ind in self.population]
