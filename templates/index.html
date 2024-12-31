@@ -68,6 +68,10 @@
             <div class="controls">
                 <h3>Configuration</h3>
                 <div>
+                    <label>Cible:</label>
+                    <input type="text" id="target" value="pas facile de trouver une cible">
+                </div>
+                <div>
                     <label>Taille de la population:</label>
                     <input type="number" id="populationSize" value="100" min="10" max="1000">
                 </div>
@@ -142,6 +146,7 @@
         }
 
         async function resetGA() {
+            const target = document.getElementById('target').value;
             const populationSize = document.getElementById('populationSize').value;
             const mutationRate = document.getElementById('mutationRate').value / 100; // Convertir le pourcentage en décimal
             
@@ -155,6 +160,7 @@
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
+                    target: target,
                     population_size: populationSize,
                     mutation_rate: mutationRate
                 })

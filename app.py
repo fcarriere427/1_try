@@ -136,8 +136,9 @@ def evolve():
 def reset():
     global ga
     population_size = int(request.json.get('population_size', 100))
+    target = str(request.json.get('target', "pas facile..."))
     mutation_rate = float(request.json.get('mutation_rate', 0.05))
-    ga = GeneticAlgorithm(population_size=population_size, mutation_rate=mutation_rate)
+    ga = GeneticAlgorithm(population_size=population_size, target=target, mutation_rate=mutation_rate)
     return jsonify(ga.get_stats())
 
 if __name__ == '__main__':
