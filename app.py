@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 import random
-import numpy as np
+import os
 
 app = Flask(__name__)
 app_prefix = os.getenv('APP_PREFIX', '')  # '' est la valeur par défaut si la variable n'existe pas
