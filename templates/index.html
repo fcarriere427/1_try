@@ -111,6 +111,10 @@
             const populationSize = document.getElementById('populationSize').value;
             const genesLength = document.getElementById('genesLength').value;
             
+            // Vider le tableau des détails
+            const tableBody = document.getElementById('populationTableBody');
+            tableBody.innerHTML = '';
+            
             const response = await fetch('/reset', {
                 method: 'POST',
                 headers: {
