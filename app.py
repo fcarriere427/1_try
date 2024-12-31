@@ -119,11 +119,12 @@ class GeneticAlgorithm:
         }
 
 # Instance globale de l'algorithme génétique
-ga = GeneticAlgorithm()
+DEFAULT_TARGET = "nouvelle cible"
+ga = GeneticAlgorithm(target=DEFAULT_TARGET)
 
 @app.route(f'{app_prefix}/')
 def home():
-    return render_template('index.html')
+    return render_template('index.html', default_target=DEFAULT_TARGET)
 
 @app.route(f'{app_prefix}/evolve', methods=['POST'])
 def evolve():
