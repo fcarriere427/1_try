@@ -92,11 +92,11 @@ class GeneticAlgorithm:
             self.best_fitness = current_best_fitness
             self.best_individual = self.population[current_best_index]
         
-        # Ajouter à l'historique
+        # Ajouter à l'historique avec le fitness en pourcentage
         self.generation_history.append({
             'id': current_best_index + 1,
             'genes': ''.join(self.decode_individual(self.population[current_best_index])),
-            'fitness': current_best_fitness
+            'fitness': round(current_best_fitness, 1)  # Arrondi à 1 décimale
         })
 
     def get_stats(self):
