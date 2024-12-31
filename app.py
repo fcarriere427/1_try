@@ -13,17 +13,21 @@ class GeneticAlgorithm:
         self.mutation_rate = mutation_rate
         self.population = self.create_initial_population()
         self.best_individual = None
-        self.best_fitness = float('-inf')
+        self.best_fitness = float('-inf')  # Sera mis à jour avec un pourcentage
         self.generation = 0
         self.generation_history = []
 
-        # Ajouter la génération initiale à l'historique
+        # Ajouter la génération initiale à l'historique avec le fitness en pourcentage
         fitness_scores = [self.fitness(ind) for ind in self.population]
         best_index = fitness_scores.index(max(fitness_scores))
+        first_fitness = fitness_scores[best_index]
+        self.best_fitness = first_fitness
+        self.best_individual = self.population[best_index]
+        
         self.generation_history.append({
             'id': best_index + 1,
             'genes': ''.join(self.decode_individual(self.population[best_index])),
-            'fitness': fitness_scores[best_index]
+            'fitness': round(first_fitness, 1)
         })
         
     def create_initial_population(self):

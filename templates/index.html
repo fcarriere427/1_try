@@ -115,8 +115,8 @@
     <script>
         function updateStats(data) {
             document.getElementById('generation').textContent = data.generation;
-            document.getElementById('bestFitness').textContent = data.best_fitness;
-            document.getElementById('avgFitness').textContent = data.avg_fitness.toFixed(2);
+            document.getElementById('bestFitness').textContent = data.best_fitness.toFixed(1) + '%';
+            document.getElementById('avgFitness').textContent = data.avg_fitness.toFixed(1) + '%';
             document.getElementById('bestIndividual').textContent = data.best_individual || '-';
             
             // Mettre à jour le tableau des générations
