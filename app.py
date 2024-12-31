@@ -73,20 +73,21 @@ class GeneticAlgorithm:
 
     def get_stats(self):
         fitness_scores = [self.fitness(ind) for ind in self.population]
-        # Créer les détails pour chaque individu
-        population_details = []
-        for idx, individual in enumerate(self.population):
-            population_details.append({
-                'id': idx + 1,
-                'genes': ''.join(map(str, individual)),
-                'fitness': fitness_scores[idx]
-            })
+        
+        # Trouver le meilleur individu de la génération actuelle
+        best_index = fitness_scores.index(max(fitness_scores))
+        best_of_gen = {
+            'id': best_index + 1,
+            'genes': ''.join(map(str, self.population[best_index])),
+            'fitness': fitness_scores[best_index]
+        }
+        
         return {
             'generation': self.generation,
             'best_fitness': self.best_fitness,
             'avg_fitness': np.mean(fitness_scores),
             'best_individual': ''.join(map(str, self.best_individual)) if self.best_individual else None,
-            'population_details': population_details
+            'best_of_generation': best_of_gen
         }
 
 # Instance globale de l'algorithme génétique
