@@ -82,30 +82,31 @@ class GeneticAlgorithm:
         self.population = new_population[:self.population_size]
         self.generation += 1
         
-        # Mettre à jour le meilleur individu
-        for individual in self.population:
-            fitness = self.fitness(individual)
-            if fitness > self.best_fitness:
-                self.best_fitness = fitness
-                self.best_individual = individual
+        # Mettre à jour le meilleur individu global
+        current_fitness_scores = [self.fitness(ind) for ind in self.population]
+        current_best_index = current_fitness_scores.index(max(current_fitness_scores))
+        current_best_fitness = current_fitness_scores[current_best_index]
         
-        # Ajouter à l'historique après l'évolution
-        fitness_scores = [self.fitness(ind) for ind in self.population]
-        best_index = fitness_scores.index(max(fitness_scores))
+        if current_best_fitness > self.best_fitness:
+            self.best_fitness = current_best_fitness
+            self.best_individual = self.population[current_best_index]
+        
+        # Ajouter à l'historique
         self.generation_history.append({
-            'id': best_index + 1,
-            'genes': ''.join(map(str, self.population[best_index])),
-            'fitness': fitness_scores[best_index]
+            'id': current_best_index + 1,
+            'genes': ''.join(self.decode_individual(self.population[current_best_index])),
+            'fitness': current_best_fitness
         })
 
     def get_stats(self):
         fitness_scores = [self.fitness(ind) for ind in self.population]
+        best_individual = ''.join(self.decode_individual(self.best_individual)) if self.best_individual else None
         
         return {
             'generation': self.generation,
             'best_fitness': self.best_fitness,
             'avg_fitness': np.mean(fitness_scores),
-            'best_individual': ''.join(map(str, self.best_individual)) if self.best_individual else None,
+            'best_individual': best_individual,
             'generation_history': self.generation_history
         }
 
