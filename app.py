@@ -3,6 +3,8 @@ import random
 import numpy as np
 
 app = Flask(__name__)
+app_prefix = os.getenv('APP_PREFIX', '')  # '' est la valeur par défaut si la variable n'existe pas
+
 
 class GeneticAlgorithm:
     def __init__(self, population_size=100, target="michel drucker", mutation_rate=0.05):
@@ -118,18 +120,18 @@ class GeneticAlgorithm:
 # Instance globale de l'algorithme génétique
 ga = GeneticAlgorithm()
 
-@app.route('/')
+@app.route(f'{app_prefix}/')
 def home():
     return render_template('index.html')
 
-@app.route('/evolve', methods=['POST'])
+@app.route(f'{app_prefix}/evolve', methods=['POST'])
 def evolve():
     generations = int(request.json.get('generations', 1))
     for _ in range(generations):
         ga.evolve()
     return jsonify(ga.get_stats())
 
-@app.route('/reset', methods=['POST'])
+@app.route(f'{app_prefix}/reset', methods=['POST'])
 def reset():
     global ga
     population_size = int(request.json.get('population_size', 100))
