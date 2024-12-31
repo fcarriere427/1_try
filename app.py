@@ -8,7 +8,7 @@ app_prefix = os.getenv('APP_PREFIX', '')  # '' est la valeur par défaut si la v
 
 
 class GeneticAlgorithm:
-    def __init__(self, population_size=100, target="michel drucker", mutation_rate=0.05):
+    def __init__(self, population_size=100, target="bob morane", mutation_rate=0.05):
         self.population_size = population_size
         self.target = target
         self.genes_length = len(target)
