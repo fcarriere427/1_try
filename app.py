@@ -12,7 +12,16 @@ class GeneticAlgorithm:
         self.best_individual = None
         self.best_fitness = float('-inf')
         self.generation = 0
-        self.generation_history = []  # Pour stocker l'historique des générations
+        self.generation_history = []
+
+        # Ajouter la génération initiale à l'historique
+        fitness_scores = [self.fitness(ind) for ind in self.population]
+        best_index = fitness_scores.index(max(fitness_scores))
+        self.generation_history.append({
+            'id': best_index + 1,
+            'genes': ''.join(map(str, self.population[best_index])),
+            'fitness': fitness_scores[best_index]
+        })
 
     def create_initial_population(self):
         return [[random.randint(0, 1) for _ in range(self.genes_length)] 
@@ -71,21 +80,18 @@ class GeneticAlgorithm:
             if fitness > self.best_fitness:
                 self.best_fitness = fitness
                 self.best_individual = individual
-
-    def get_stats(self):
-        fitness_scores = [self.fitness(ind) for ind in self.population]
         
-        # Trouver le meilleur individu de la génération actuelle
+        # Ajouter à l'historique après l'évolution
+        fitness_scores = [self.fitness(ind) for ind in self.population]
         best_index = fitness_scores.index(max(fitness_scores))
-        best_of_gen = {
+        self.generation_history.append({
             'id': best_index + 1,
             'genes': ''.join(map(str, self.population[best_index])),
             'fitness': fitness_scores[best_index]
-        }
-        
-        # Ajouter à l'historique
-        if len(self.generation_history) <= self.generation:
-            self.generation_history.append(best_of_gen)
+        })
+
+    def get_stats(self):
+        fitness_scores = [self.fitness(ind) for ind in self.population]
         
         return {
             'generation': self.generation,
