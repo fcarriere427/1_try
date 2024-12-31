@@ -97,7 +97,7 @@
                     <td style="padding: 8px; border: 1px solid #ddd; font-family: monospace;">${individual.genes}</td>
                     <td style="padding: 8px; border: 1px solid #ddd;">${individual.fitness}</td>
                 `;
-                tableBody.insertBefore(row, tableBody.firstChild);
+                tableBody.appendChild(row);  // Ajouter à la fin du tableau
             });
             
             // Limiter le nombre de lignes affichées (optionnel)
