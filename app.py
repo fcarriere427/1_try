@@ -5,11 +5,12 @@ import numpy as np
 app = Flask(__name__)
 
 class GeneticAlgorithm:
-    def __init__(self, population_size=100, target="michel drucker"):
+    def __init__(self, population_size=100, target="michel drucker", mutation_rate=0.05):
         self.population_size = population_size
         self.target = target
         self.genes_length = len(target)
         self.chars = " abcdefghijklmnopqrstuvwxyz"  # espace + lettres minuscules
+        self.mutation_rate = mutation_rate
         self.population = self.create_initial_population()
         self.best_individual = None
         self.best_fitness = float('-inf')
@@ -128,7 +129,8 @@ def evolve():
 def reset():
     global ga
     population_size = int(request.json.get('population_size', 100))
-    ga = GeneticAlgorithm(population_size=population_size)
+    mutation_rate = float(request.json.get('mutation_rate', 0.05))
+    ga = GeneticAlgorithm(population_size=population_size, mutation_rate=mutation_rate)
     return jsonify(ga.get_stats())
 
 if __name__ == '__main__':
