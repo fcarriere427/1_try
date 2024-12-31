@@ -5,21 +5,39 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
+            margin: 0;
             padding: 20px;
         }
-        .controls {
-            margin: 20px 0;
+        .container {
+            display: flex;
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .left-column {
+            flex: 0 0 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .right-column {
+            flex: 1;
+        }
+        .controls, .stats {
             padding: 20px;
             border: 1px solid #ddd;
             border-radius: 5px;
+            background-color: white;
         }
-        .stats {
-            margin: 20px 0;
+        .generation-summary {
             padding: 20px;
-            background-color: #f5f5f5;
+            border: 1px solid #ddd;
             border-radius: 5px;
+            background-color: white;
+        }
+        .scroll-container {
+            max-height: calc(100vh - 80px);
+            overflow-y: auto;
         }
         button {
             padding: 10px 20px;
@@ -30,51 +48,67 @@
             padding: 5px;
             margin: 5px;
         }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f5f5f5;
+        }
     </style>
 </head>
 <body>
-    <h1>Simulateur d'Algorithme Génétique</h1>
-    
-    <div class="controls">
-        <h3>Configuration</h3>
-        <div>
-            <label>Taille de la population:</label>
-            <input type="number" id="populationSize" value="100" min="10" max="1000">
-        </div>
-        <div>
-            <label>Longueur des gènes:</label>
-            <input type="number" id="genesLength" value="10" min="5" max="100">
-        </div>
-        <div>
-            <label>Nombre de générations à simuler:</label>
-            <input type="number" id="generations" value="1" min="1" max="100">
-        </div>
-        <button onclick="resetGA()">Réinitialiser</button>
-        <button onclick="evolveGA()">Évoluer</button>
-    </div>
+    <div class="container">
+        <div class="left-column">
+            <div class="controls">
+                <h3>Configuration</h3>
+                <div>
+                    <label>Taille de la population:</label>
+                    <input type="number" id="populationSize" value="100" min="10" max="1000">
+                </div>
+                <div>
+                    <label>Longueur des gènes:</label>
+                    <input type="number" id="genesLength" value="10" min="5" max="100">
+                </div>
+                <div>
+                    <label>Nombre de générations à simuler:</label>
+                    <input type="number" id="generations" value="1" min="1" max="100">
+                </div>
+                <button onclick="resetGA()">Réinitialiser</button>
+                <button onclick="evolveGA()">Évoluer</button>
+            </div>
 
-    <div class="stats">
-        <h3>Statistiques</h3>
-        <p>Génération: <span id="generation">0</span></p>
-        <p>Meilleur fitness: <span id="bestFitness">0</span></p>
-        <p>Fitness moyen: <span id="avgFitness">0</span></p>
-        <p>Meilleur individu: <span id="bestIndividual">-</span></p>
-    </div>
+            <div class="stats">
+                <h3>Statistiques</h3>
+                <p>Génération: <span id="generation">0</span></p>
+                <p>Meilleur fitness: <span id="bestFitness">0</span></p>
+                <p>Fitness moyen: <span id="avgFitness">0</span></p>
+                <p>Meilleur individu: <span id="bestIndividual">-</span></p>
+            </div>
+        </div>
 
-    <div class="generation-summary">
-        <h3>Résumé des Générations</h3>
-        <div style="max-height: 400px; overflow-y: auto;">
-            <table id="generationTable" style="width: 100%; border-collapse: collapse;">
-                <thead>
-                    <tr>
-                        <th style="padding: 8px; border: 1px solid #ddd; background-color: #f5f5f5;">Génération</th>
-                        <th style="padding: 8px; border: 1px solid #ddd; background-color: #f5f5f5;">Meilleur Individu #</th>
-                        <th style="padding: 8px; border: 1px solid #ddd; background-color: #f5f5f5;">Gènes</th>
-                        <th style="padding: 8px; border: 1px solid #ddd; background-color: #f5f5f5;">Fitness</th>
-                    </tr>
-                </thead>
-                <tbody id="generationTableBody"></tbody>
-            </table>
+        <div class="right-column">
+            <div class="generation-summary">
+                <h3>Résumé des Générations</h3>
+                <div class="scroll-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Génération</th>
+                                <th>Meilleur Individu #</th>
+                                <th>Gènes</th>
+                                <th>Fitness</th>
+                            </tr>
+                        </thead>
+                        <tbody id="generationTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 
