@@ -12,6 +12,7 @@ class GeneticAlgorithm:
         self.best_individual = None
         self.best_fitness = float('-inf')
         self.generation = 0
+        self.generation_history = []  # Pour stocker l'historique des générations
 
     def create_initial_population(self):
         return [[random.randint(0, 1) for _ in range(self.genes_length)] 
@@ -82,12 +83,16 @@ class GeneticAlgorithm:
             'fitness': fitness_scores[best_index]
         }
         
+        # Ajouter à l'historique
+        if len(self.generation_history) <= self.generation:
+            self.generation_history.append(best_of_gen)
+        
         return {
             'generation': self.generation,
             'best_fitness': self.best_fitness,
             'avg_fitness': np.mean(fitness_scores),
             'best_individual': ''.join(map(str, self.best_individual)) if self.best_individual else None,
-            'best_of_generation': best_of_gen
+            'generation_history': self.generation_history
         }
 
 # Instance globale de l'algorithme génétique

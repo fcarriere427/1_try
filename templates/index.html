@@ -87,17 +87,21 @@
             
             // Mettre à jour le tableau des générations
             const tableBody = document.getElementById('generationTableBody');
-            const bestOfGen = data.best_of_generation;
             
-            // Ajouter une nouvelle ligne pour la génération actuelle
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td style="padding: 8px; border: 1px solid #ddd;">${data.generation}</td>
-                <td style="padding: 8px; border: 1px solid #ddd;">${bestOfGen.id}</td>
-                <td style="padding: 8px; border: 1px solid #ddd; font-family: monospace;">${bestOfGen.genes}</td>
-                <td style="padding: 8px; border: 1px solid #ddd;">${bestOfGen.fitness}</td>
-            `;
-            tableBody.appendChild(row);
+            // Vider le tableau existant
+            tableBody.innerHTML = '';
+            
+            // Ajouter une ligne pour chaque génération de l'historique
+            data.generation_history.forEach((bestOfGen, genIndex) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td style="padding: 8px; border: 1px solid #ddd;">${genIndex}</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">${bestOfGen.id}</td>
+                    <td style="padding: 8px; border: 1px solid #ddd; font-family: monospace;">${bestOfGen.genes}</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">${bestOfGen.fitness}</td>
+                `;
+                tableBody.appendChild(row);
+            });
         }
 
         async function resetGA() {
