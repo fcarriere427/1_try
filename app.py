@@ -5,9 +5,11 @@ import numpy as np
 app = Flask(__name__)
 
 class GeneticAlgorithm:
-    def __init__(self, population_size=100, genes_length=10):
+    def __init__(self, population_size=100, target="michel drucker"):
         self.population_size = population_size
-        self.genes_length = genes_length
+        self.target = target
+        self.genes_length = len(target)
+        self.chars = " abcdefghijklmnopqrstuvwxyz"  # espace + lettres minuscules
         self.population = self.create_initial_population()
         self.best_individual = None
         self.best_fitness = float('-inf')
@@ -19,17 +21,22 @@ class GeneticAlgorithm:
         best_index = fitness_scores.index(max(fitness_scores))
         self.generation_history.append({
             'id': best_index + 1,
-            'genes': ''.join(map(str, self.population[best_index])),
+            'genes': ''.join(self.decode_individual(self.population[best_index])),
             'fitness': fitness_scores[best_index]
         })
-
+        
     def create_initial_population(self):
-        return [[random.randint(0, 1) for _ in range(self.genes_length)] 
+        return [[random.randint(0, len(self.chars)-1) for _ in range(self.genes_length)] 
                 for _ in range(self.population_size)]
+    
+    def decode_individual(self, individual):
+        return [self.chars[idx] for idx in individual]
 
     def fitness(self, individual):
-        # Exemple simple : compter le nombre de 1
-        return sum(individual)
+        # Nombre de caractères corrects à la bonne position
+        decoded = self.decode_individual(individual)
+        matches = sum(1 for a, b in zip(decoded, self.target) if a == b)
+        return matches
 
     def select_parents(self):
         # Sélection par tournoi
@@ -51,10 +58,11 @@ class GeneticAlgorithm:
         child2 = parent2[:crossover_point] + parent1[crossover_point:]
         return child1, child2
 
-    def mutate(self, individual, mutation_rate=0.01):
-        # Mutation par inversion de bit
-        return [bit if random.random() > mutation_rate else 1 - bit 
-                for bit in individual]
+    def mutate(self, individual, mutation_rate=0.05):
+        # Mutation par changement aléatoire de caractère
+        return [gene if random.random() > mutation_rate 
+                else random.randint(0, len(self.chars)-1) 
+                for gene in individual]
 
     def evolve(self):
         new_population = []
@@ -119,8 +127,7 @@ def evolve():
 def reset():
     global ga
     population_size = int(request.json.get('population_size', 100))
-    genes_length = int(request.json.get('genes_length', 10))
-    ga = GeneticAlgorithm(population_size, genes_length)
+    ga = GeneticAlgorithm(population_size=population_size)
     return jsonify(ga.get_stats())
 
 if __name__ == '__main__':
